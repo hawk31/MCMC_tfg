@@ -17,8 +17,18 @@ gibbsMixture <- function(data,k,max_iter=1000){
   pj_mat[1,] = rep(1,k)/k
   sig_mat[1,] = rep(sig,k)
   
-  ## Possible chunk for likelihood
+  likelihood = matrix(NA, n, k)
+  logpost = rep(NA, max_iter)
   
+  ## Chunk for likelihood
+  
+  for(j in 1:k){
+    likelihood[,j] = pj_mat[1,j]*dnorm(x=data, mean=mu_mat[1,j],
+                                       sd=sqrt(sig_mat[1,j]))
+  }
+  
+  logpost[1] = sum(log(apply(likelihood,1,sum))) + sum(dnorm(mu_mat[1,],mean(data),sqrt(sig_mat[1,]),log=T)) -
+    (10+1)*sum(log(sig_mat[1,])) - sum(var(data)/sig_mat[1,]) + 0.5*sum(log(pj_mat[1,]))
   #######
   
   ### Main loop
@@ -44,11 +54,19 @@ gibbsMixture <- function(data,k,max_iter=1000){
     
     pj_mat[i,] = rdirichlet(params = group_size + 0.5)
     
+    #likelihood
+    for(j in 1:k){
+      likelihood[,j] = pj_mat[i,j]*dnorm(x=data,mean=mu_mat[i,j],sd=sqrt(sig_mat[i,j]))
+    }
+    
+    logpost[i] = sum(log(apply(likelihood,1,sum))) + sum(dnorm(mu_mat[i,],mean(data),sqrt(sig_mat[i,]),log=T)) -
+      (10+1)*sum(log(sig_mat[i,])) - sum(var(data)/sig_mat[i,]) + 0.5*sum(log(pj_mat[i,]))
     
     
   }
-  class = setClass("MCMC mixture", slots=c(mu="matrix", sig="matrix", p="matrix", group="numeric"))
-  res = class(mu = mu_mat, sig = sig_mat, p = pj_mat, group = z)
+  class = setClass("MCMC mixture", slots=c(mu="matrix", sig="matrix", p="matrix", group="numeric", logpost="numeric", n="numeric",
+                                           k="numeric", data="numeric", max_iter="numeric"))
+  res = class(mu = mu_mat, sig = sig_mat, p = pj_mat, group = z, logpost = logpost, n=n, k=k, data=data, max_iter=max_iter)
   return(res)
 }
 
