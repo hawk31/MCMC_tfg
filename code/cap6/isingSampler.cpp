@@ -35,16 +35,16 @@ NumericMatrix isingSampler(NumericMatrix x, int max_iter, double beta){
   int k;
   int l;
   
-  NumericVector rows;
+  NumericVector rows(n);
   rows = Rcpp::seq(1,n);
-  NumericVector cols;
+  NumericVector cols(m);
   cols = Rcpp::seq(1,m);
   
-  NumericVector pos;
+  NumericVector pos(2);
   pos = Rcpp::seq(0,1);
   
-  NumericVector permut_rows;
-  NumericVector permut_cols;
+  NumericVector permut_rows(n);
+  NumericVector permut_cols(m);
   
   NumericVector prob(2, 0.5);
   
@@ -70,15 +70,18 @@ NumericMatrix isingSampler(NumericMatrix x, int max_iter, double beta){
         prob[1] = exp(beta*n1);
         
         
-        pos1 = permut_rows[k];
-        pos2 = permut_cols[l];
+        pos1 = permut_rows[k-1];
+        pos2 = permut_cols[l-1];
         
         res = RcppArmadillo::sample(pos, 1, 0, prob)[0];
         
         
         x(pos1, pos2) = res;
+        
       }
     }
+    Rcpp::Function(gc());
+
   }
   
   return x;
