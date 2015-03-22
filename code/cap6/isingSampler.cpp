@@ -18,9 +18,11 @@ int nei4(NumericMatrix x, int a, int b, int col){
   a = a-1;
   b = b-1;
   if(a != 0){
-  if(x(a-1,b) == col){nei++;}}
+    if(x(a-1,b) == col){nei++;}
+    }
   if(b != 0){
-  if(x(a,b-1) == col){nei++;}}
+    if(x(a,b-1) == col){nei++;}
+  }
   if(a != (n-1)){
     if(x(a+1,b) == col){nei++;}
   }
@@ -72,8 +74,8 @@ NumericMatrix isingSampler(NumericMatrix x, int max_iter, double beta){
         prob[1] = exp(beta*n1);
         
         
-        pos1 = permut_rows[k-1];
-        pos2 = permut_cols[l-1];
+        pos1 = permut_rows[k-1]-1;
+        pos2 = permut_cols[l-1]-1;
         
         double suma = prob[0] + prob[1];
         prob[0] = prob[0]/suma;
