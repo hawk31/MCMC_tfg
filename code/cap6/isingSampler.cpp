@@ -17,13 +17,14 @@ int nei4(NumericMatrix x, int a, int b, int col){
   int nei = 0;
   a = a-1;
   b = b-1;
-  
-  if(x(a-1,b) == col){nei++;}
-  if(x(a,b-1) == col){nei++;}
-  if(a != n){
+  if(a != 0){
+  if(x(a-1,b) == col){nei++;}}
+  if(b != 0){
+  if(x(a,b-1) == col){nei++;}}
+  if(a != (n-1)){
     if(x(a+1,b) == col){nei++;}
   }
-  if(b != m){
+  if(b != (m-1)){
     if(x(a,b+1) == col){nei++;}
   }
   return nei;}
@@ -53,6 +54,7 @@ NumericMatrix isingSampler(NumericMatrix x, int max_iter, double beta){
   
   int pos1;
   int pos2;
+
   
   double res;
 
@@ -73,7 +75,13 @@ NumericMatrix isingSampler(NumericMatrix x, int max_iter, double beta){
         pos1 = permut_rows[k-1];
         pos2 = permut_cols[l-1];
         
+        double suma = prob[0] + prob[1];
+        prob[0] = prob[0]/suma;
+        prob[1] = prob[1]/suma;
+        
         res = RcppArmadillo::sample(pos, 1, 0, prob)[0];
+        //res = Rcpp::Function(sample(pos,1,0,prob));
+        Rcpp::Function(gc());
         
         
         x(pos1, pos2) = res;
