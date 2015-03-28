@@ -5,12 +5,6 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 using namespace Rcpp;
 
-// Below is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp 
-// function (or via the Source button on the editor toolbar)
-
-// For more on using Rcpp click the Help button on the editor toolbar
-
 // [[Rcpp::export]]
 int nei4(NumericMatrix x, int a, int b, int col){
   int n = x.nrow(), m = x.ncol();
@@ -82,15 +76,13 @@ NumericMatrix isingSampler(NumericMatrix x, int max_iter, double beta){
         prob[1] = prob[1]/suma;
         
         res = RcppArmadillo::sample(pos, 1, 0, prob)[0];
-        //res = Rcpp::Function(sample(pos,1,0,prob));
-        Rcpp::Function(gc());
+
         
         
         x(pos1, pos2) = res;
         
       }
     }
-    Rcpp::Function(gc());
 
   }
   
