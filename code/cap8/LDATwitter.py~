@@ -8,10 +8,10 @@ Twitter Crawler
 """
 import numpy as np
 
-access_token = "xxxxxx"
-access_token_secret = "xxxxxx"
-consumer_key = "xxxx"
-consumer_secret = "xxxxxx"
+access_token = "104187533-wpwRqx0eJdMPe9XEFH9QNhakWZTqcmRrkYfAgO35"
+access_token_secret = "uadtTH6biyw0MYrvSyT4FQpFC06Zjd4KBpvp9bHmSeIPx"
+consumer_key = "RIGYultpNAe932VEikT4zHSfe"
+consumer_secret = "ZmvXSYGbiGxpHHHe5QDeqdWIOMTvShbphXlq6DkjmDZnQ9ZTwv"
 
 import tweepy
 
